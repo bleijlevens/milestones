@@ -26,7 +26,6 @@ module.exports = {
     instructionsB: './src/instructionsB.js',
     previc: './src/previc.js',
     goodbye: './src/goodbye.js',
-    previc_adaptive: './src/previc_adaptive.ts',
   },
   // if you hace multiple entry points, use [name].js to resolve output file names to match the
   // entry point key

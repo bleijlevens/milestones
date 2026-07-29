@@ -15,7 +15,6 @@
     "@babel/core": "^7.19.3",
     "@babel/preset-env": "^7.19.3",
     "@material/select": "^14.0.0",
-    "adaptivetesting": "file:adaptivetesting",
     "babel-loader": "^8.2.5",
     "install": "^0.13.0",
     "minimal-webpack-dev-server-babel-setup": "file:",
