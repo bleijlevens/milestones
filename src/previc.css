@@ -132,6 +132,10 @@ body {
     background: #e4a35e;
 }
 
+#viewport li.social {
+    background: #B8A7D6;
+}
+
 .columns {
     display: flex;
     align-items: center;
