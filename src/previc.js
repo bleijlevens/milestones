@@ -29,7 +29,7 @@ let item = 0;
 const data = JSON.parse(wordData());
 const trials = data.length;
 
-counter.textContent = `${item + 1} von ${trials} Wörtern`;
+counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
 
 data.splice(data.length - item, item);
 
@@ -79,7 +79,7 @@ function logResponse() {
 
   // increase counter
   item++;
-  counter.textContent = `${item + 1} von ${trials} Wörtern`;
+  counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
 
   // Remove card from stack and hide
   cards.lastElementChild.classList.remove('in-deck');
