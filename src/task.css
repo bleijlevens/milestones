@@ -93,14 +93,14 @@ body {
 #viewport li {
     width: 40vw; 
     height: 55vh; 
-    line-height: 55vh; 
+    line-height: 10vh; 
     list-style: none; 
     color: white;
     border-radius: 5px; 
     position: absolute; 
     top: 0; 
     left: 0; 
-    font-size: 5vw;
+    font-size: 2.5vw;
     border: 2px solid #ECECEC; 
 }
 
@@ -120,15 +120,15 @@ body {
 }
 
 /* color background depending on POS */
-#viewport li.noun {
+#viewport li.motor {
     background: #819ec2;
 }
 
-#viewport li.verb {
+#viewport li.cognitive {
     background: #9cc982;
 }
 
-#viewport li.adjective {
+#viewport li.language {
     background: #e4a35e;
 }
 

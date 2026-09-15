@@ -12,7 +12,7 @@ const handleContinueClick = (event) => {
   event.preventDefault();
 
   if (version === 'o') {
-    window.location.href = `./previc.html?ID=${subjID}`;
+    window.location.href = `./task.html?ID=${subjID}`;
   } else if (version === 'a') {
     window.location.href = `./previc_adaptive.html?ID=${subjID}&se=${se}`;
   }

@@ -24,7 +24,7 @@ module.exports = {
     index: './src/index.js', // main.js will be the name in the dist folder
     instructionsA: './src/instructionsA.js',
     instructionsB: './src/instructionsB.js',
-    previc: './src/previc.js',
+    task: './src/task.js',
     goodbye: './src/goodbye.js',
   },
   // if you hace multiple entry points, use [name].js to resolve output file names to match the

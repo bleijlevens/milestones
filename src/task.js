@@ -1,13 +1,12 @@
-import './previc.css';
+import './task.css';
 import downloadData from './backend/downloadData.js';
-import wordData from './backend/wordDataSelected.js';
+import milestonesData from './backend/milestonesDataSelected.js';
 // https://github.com/gajus/swing
 import * as Swing from 'swing';
 
 // ---------------------------------------------------------------------------------------------------------------------
 // INITIALIZE ELEMENTS/OBJECTS
 // ---------------------------------------------------------------------------------------------------------------------
-const devmode = false;
 const subjID =
   new URL(document.location.href).searchParams.get('ID') || 'testID';
 const counter = document.getElementById('counter');
@@ -17,7 +16,7 @@ const buttonYes = document.getElementById('button-yes');
 // An instance of the Stack is used to attach event listeners.
 const stack = Swing.Stack();
 
-// get html element for UL for words
+// get html element for UL for milestones
 const cards = document.getElementById('stack');
 
 // ---------------------------------------------------------------------------------------------------------------------
@@ -25,8 +24,8 @@ const cards = document.getElementById('stack');
 // ---------------------------------------------------------------------------------------------------------------------
 let item = 0;
 
-// read in word data
-const data = JSON.parse(wordData());
+// read in milestone data
+const data = JSON.parse(milestonesData());
 const trials = data.length;
 
 counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
@@ -36,7 +35,8 @@ data.splice(data.length - item, item);
 for (let i = 0; i < data.length; i++) {
   const newLI = document.createElement('li');
   newLI.classList.add(`${data[i].pos}`);
-  newLI.appendChild(document.createTextNode(data[i].word));
+  newLI.dataset.itemId = data[i].item_id;
+  newLI.appendChild(document.createTextNode(data[i].label));
   cards.appendChild(newLI);
 }
 
@@ -64,12 +64,13 @@ let responseLog = {
 // ---------------------------------------------------------------------------------------------------------------------
 function logResponse() {
   responseLog.data[item] = {
-    // get word
-    word: cards.lastElementChild.innerText,
+    // get item id and milestone
+    item_id: cards.lastElementChild.dataset.itemId,
+    label: cards.lastElementChild.innerText,
 
     // throwDirection returns e.g. Symbol(RIGHT)
     // to get direction as string, get the description of the symbol
-    // score 0 if child doesn't know word; score 1 if child knows word
+    // score 0 if child doesn't pass milestone; score 1 if child passes milestone
     // score: e.throwDirection.description === 'LEFT' ? 0 : 1,
     score: '',
     pos: cards.lastElementChild.classList[0],
@@ -79,7 +80,9 @@ function logResponse() {
 
   // increase counter
   item++;
-  counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
+  if (item < trials) {
+    counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
+  };
 
   // Remove card from stack and hide
   cards.lastElementChild.classList.remove('in-deck');
@@ -92,7 +95,7 @@ stack.on('throwout', (e) => {
   responseLog.data[item - 1].score =
     e.throwDirection.description === 'LEFT' ? 0 : 1;
 
-  // if all words were shown, save responses
+  // if all milestones were shown, save responses
   if (document.querySelectorAll('#stack li').length === 0) {
     downloadData(responseLog, responseLog.meta.subjID);
     setTimeout(() => (window.location.href = `./goodbye.html`), 1000);
@@ -103,7 +106,7 @@ const handleNoClick = (e) => {
   logResponse();
   responseLog.data[item - 1].score = 0;
 
-  // if all words were shown, save responses
+  // if all milestones were shown, save responses
   if (document.querySelectorAll('#stack li').length === 0) {
     downloadData(responseLog, responseLog.meta.subjID);
     setTimeout(() => (window.location.href = `./goodbye.html`), 1000);
@@ -114,7 +117,7 @@ const handleYesClick = (e) => {
   logResponse();
   responseLog.data[item - 1].score = 1;
 
-  // if all words were shown, save responses
+  // if all milestones were shown, save responses
   if (document.querySelectorAll('#stack li').length === 0) {
     downloadData(responseLog, responseLog.meta.subjID);
     setTimeout(() => (window.location.href = `./goodbye.html`), 1000);
