@@ -9,6 +9,6 @@ export default (safe, ID) => {
 
   const hiddenElement = document.createElement('a');
   hiddenElement.href = window.URL.createObjectURL(toSave);
-  hiddenElement.download = `previc-${ID}-${day}-${time}.json`;
+  hiddenElement.download = `milestones-${ID}-${day}-${time}.json`;
   hiddenElement.click();
 };

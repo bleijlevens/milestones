@@ -36,7 +36,19 @@ for (let i = 0; i < data.length; i++) {
   const newLI = document.createElement('li');
   newLI.classList.add(`${data[i].pos}`);
   newLI.dataset.itemId = data[i].item_id;
-  newLI.appendChild(document.createTextNode(data[i].label));
+
+  // milestone text
+  const label = document.createElement('div');
+  label.classList.add('milestone-text');
+  label.textContent = data[i].label;
+  newLI.appendChild(label);
+
+  // milestone image
+  const image = document.createElement('img');
+  image.src = `./images/item_images/${data[i].item_id}.png`;
+  image.alt = '';
+  newLI.appendChild(image);
+
   cards.appendChild(newLI);
 }
 
