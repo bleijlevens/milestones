@@ -52,7 +52,7 @@
 
         <p>
           <strong>
-            Bitte tragen Sie hier einen Namen oder Pseudonym ein:
+            Bitte tragen Sie hier einen Namen oder Pseudonym zur Teilnahme ein:
           </strong>
         </p>
 
@@ -76,87 +76,68 @@
 
         <p>
           <strong>
-            Welche Version des Fragebogens möchten Sie bearbeiten?
+            Um die Formulierungen der Fragen an Ihr Kind anzupassen, geben Sie bitte an, für wen Sie diesen Fragebogen ausfüllen:
           </strong>
         </p>
 
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input
-              class="mdc-radio__native-control"
-              type="radio"
-              id="radio-previcversion-original"
-              name="radios-previcversion"
-              unchecked
-            />
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <br />
-          <label for="radio-previcversion-original"
-            >Vollständiger Fragebogen (89 Wörter)</label
-          >
-        </div>
-        <br />
-        <div class="mdc-form-field">
-          <div class="mdc-radio">
-            <input
-              class="mdc-radio__native-control"
-              type="radio"
-              id="radio-previcversion-adaptive"
-              name="radios-previcversion"
-              unchecked
-            />
-            <div class="mdc-radio__background">
-              <div class="mdc-radio__outer-circle"></div>
-              <div class="mdc-radio__inner-circle"></div>
-            </div>
-          </div>
-          <label for="radio-previcversion-adaptive"
-            >Adaptiver Fragebogen (Anzahl der Wörter variiert)</label
-          >
-        </div>
+        <p>
+          <i>
+            Vorname des Kindes:
+          </i>
+        </p>
+
+        <label class="mdc-text-field mdc-text-field--filled">
+          <span class="mdc-text-field__ripple"></span>
+          <span class="mdc-floating-label" id="child-name-label"></span>
+          <input
+            class="mdc-text-field__input"
+            id="child-name-input"
+            type="text"
+            aria-labelledby="child-name-label"
+          />
+          <span class="mdc-line-ripple"></span>
+        </label>
 
         <br />
 
-        <div id="se-selection" style="display: none">
-          <p>
-            <strong> Standardfehler: </strong>
-            <br />
-            <em>
-              (Je kleiner der Wert, desto präziser die Schätzung und länger der
-              Test)
-            </em>
-          </p>
+        <label>
+          <input type="checkbox" id="child-name-na">
+            keine Angabe
+        </label>
 
-          <label class="mdc-text-field mdc-text-field--filled">
-            <span class="mdc-text-field__ripple"></span>
-            <span class="mdc-floating-label" id="my-label-id"></span>
-            <input
-              id="se"
-              class="mdc-text-field__input"
-              type="number"
-              min="0.1"
-              max="0.9"
-              step="0.1"
-              value="0.4"
-            />
-            <span class="mdc-line-ripple"></span>
-          </label>
-          <br />
+        <br />
+        <br />
+        
+        <p>
+          <i>
+            Geschlecht des Kindes:
+          </i>
+        </p>
+        
+        <label>
+          <input type="radio" name="gender" value="m">
+          Junge
+        </label>
 
-          <p id="illegal-se" style="color: red"></p>
-        </div>
+        <label>
+          <input type="radio" name="gender" value="f">
+          Mädchen
+        </label>
 
+        <label>
+          <input type="radio" name="gender" value="na">
+          keine Angabe
+        </label>
+        
+
+        <br />
         <br />
 
         <p style="color: hsl(177, 100%, 21%)">
           <strong>
             <em>
               Die Daten werden nach Abschluss der Studie als .json Datei auf
-              Ihrem Gerät im Downloads Ordner gespeichert. Es werden keine
+              Ihrem Gerät im Downloads-Ordner gespeichert. Es werden keine
               weiteren Kopien an anderen Orten gespeichert.
             </em></strong
           >
@@ -189,17 +170,11 @@
           <div class="col">
             <img id="logo-leuphana" src="./images/leuphana.svg" />
           </div>
-          <div class="col">
-            <img id="logo-jena" src="./images/jena.png" />
-          </div>
-          <div class="col">
-            <img id="logo-zas" src="./images/leibniz-zas.png" />
-          </div>
         </div>
 
         <br />
 
-        <a href="https://www.eva.mpg.de/de/impressum/" target="_blank"
+        <a href="https://www.leuphana.de/impressum.html" target="_blank"
           >Impressum</a
         >
 

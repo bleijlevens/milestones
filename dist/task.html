@@ -2,10 +2,11 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="icon" href="./favicon.ico" />
-    <script src="./previc.js" defer></script>
-    <link rel="stylesheet" href="previc.css" />
-    <title>PREVIC</title>
+    <script src="./task.js" defer></script>
+    <link rel="stylesheet" href="task.css" />
+    <title>Milestones</title>
     <link rel="manifest" href="site.webmanifest" />
     <link rel="stylesheet" href="https://use.typekit.net/ess7xmw.css" />
 
@@ -37,54 +38,31 @@
     <div id="flex-wrapper">
       <div id="flex-item">
         <br />
-        <h1>Sagt Ihr Kind...</h1>
 
         <div id="viewport">
-          <div class="columns">
-            <div id="button-no" class="col-left">
+
+          <ul id="stack"></ul>
+
+          <div class="response-buttons">
+            <div id="button-no" class="response-button">
               <img id="cross" alt="cross" src="images/cross.svg" />
               <h3>nein</h3>
             </div>
 
-            <div class="col-middle">
-              <ul id="stack"></ul>
-            </div>
-
-            <div id="button-yes" class="col-right">
+            <div id="button-yes" class="response-button">
               <img id="check" alt="check" src="images/check.svg" />
               <h3>ja</h3>
             </div>
           </div>
+
+          <button class="back-button" id="button-back" disabled>
+            <h3>← zurück</h3>
+          </button>
+
         </div>
 
         <h3 id="counter"></h3>
 
-        <br />
-
-        <br />
-        <hr style="width: 100%; text-align: left; margin-left: 0" />
-        <br />
-
-        <div class="columns">
-          <div class="col">
-            <img id="logo-ccp" src="./images/mpi-eva-ccp.svg" />
-          </div>
-          <div class="col">
-            <img id="logo-leuphana" src="./images/leuphana.svg" />
-          </div>
-          <div class="col">
-            <img id="logo-jena" src="./images/jena.png" />
-          </div>
-          <div class="col">
-            <img id="logo-zas" src="./images/leibniz-zas.png" />
-          </div>
-        </div>
-
-        <br />
-
-        <a href="https://www.eva.mpg.de/de/impressum/" target="_blank"
-          >Impressum</a
-        >
 
         <!-- end flex-item -->
       </div>
