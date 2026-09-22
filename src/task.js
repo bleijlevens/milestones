@@ -9,12 +9,21 @@ import * as Swing from 'swing';
 // ---------------------------------------------------------------------------------------------------------------------
 const subjID =
   new URL(document.location.href).searchParams.get('ID') || 'testID';
+const childName = sessionStorage.getItem('childName') || '';
+const childGender =
+  new URL(document.location.href).searchParams.get('g') || 'na';
 const counter = document.getElementById('counter');
 const buttonNo = document.getElementById('button-no');
 const buttonYes = document.getElementById('button-yes');
+const buttonBack = document.getElementById('button-back');
 
 // An instance of the Stack is used to attach event listeners.
-const stack = Swing.Stack();
+const stack = Swing.Stack({
+  throwOutConfidence: (xOffset, yOffset, element) => {
+    const xConfidence = Math.min(Math.abs(xOffset) / 250, 1);
+    return xConfidence;
+  },
+});
 
 // get html element for UL for milestones
 const cards = document.getElementById('stack');
@@ -23,6 +32,44 @@ const cards = document.getElementById('stack');
 //  FIND OUT AT WHICH TRIAL TO START
 // ---------------------------------------------------------------------------------------------------------------------
 let item = 0;
+
+// function for adapted and gendered language
+const adaptLanguage = (text) => {
+
+  let adaptedText = text;
+
+  if (childGender === 'f') {
+    adaptedText = adaptedText
+      .replaceAll('{he/she}', 'she')
+      .replaceAll('{him/her}', 'her')
+      .replaceAll('{his/her}', 'her')
+      .replaceAll('{himself/herself}', 'herself');
+  }
+
+  if (childGender === 'm') {
+    adaptedText = adaptedText
+      .replaceAll('{he/she}', 'he')
+      .replaceAll('{him/her}', 'him')
+      .replaceAll('{his/her}', 'his')
+      .replaceAll('{himself/herself}', 'himself');
+  }
+
+  if (childGender === 'na') {
+    adaptedText = adaptedText
+      .replaceAll('{he/she}', 'he/she')
+      .replaceAll('{him/her}', 'him/her')
+      .replaceAll('{his/her}', 'his/her')
+      .replaceAll('{himself/herself}', 'himself/herself');
+  }
+
+  if (childName.trim().length > 0) {
+    adaptedText = adaptedText
+      .replaceAll('your child', childName)
+      .replaceAll('Your child', childName);
+  }
+
+  return adaptedText;
+};
 
 // read in milestone data
 const data = JSON.parse(milestonesData());
@@ -40,12 +87,15 @@ for (let i = 0; i < data.length; i++) {
   // milestone text
   const label = document.createElement('div');
   label.classList.add('milestone-text');
-  label.textContent = data[i].label;
+  label.textContent = adaptLanguage(data[i].label);
   newLI.appendChild(label);
 
   // milestone image
   const image = document.createElement('img');
   image.src = `./images/item_images/${data[i].item_id}.png`;
+  image.onerror = () => {
+    image.style.display = 'none';
+  };
   image.alt = '';
   newLI.appendChild(image);
 
@@ -67,6 +117,8 @@ let responseLog = {
   // get ID out of URL parameter
   meta: {
     subjID: subjID,
+    childGender: childGender,
+    childName: childName,
   },
   data: [],
 };
@@ -92,6 +144,8 @@ function logResponse() {
 
   // increase counter
   item++;
+  buttonBack.disabled = false;
+
   if (item < trials) {
     counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
   };
@@ -99,6 +153,48 @@ function logResponse() {
   // Remove card from stack and hide
   cards.lastElementChild.classList.remove('in-deck');
   cards.lastElementChild.remove();
+}
+
+// ---------------------------------------------------------------------------------------------------------------------
+// FUNCTION FOR GOING BACK ONE ITEM
+// ---------------------------------------------------------------------------------------------------------------------
+
+function goBackOneItem() {
+  if (item === 0) return;
+
+  item--;
+
+  const previousItem = data[data.length - 1 - item];
+
+  const newLI = document.createElement('li');
+  newLI.classList.add(`${previousItem.pos}`);
+  newLI.dataset.itemId = previousItem.item_id;
+
+  const label = document.createElement('div');
+  label.classList.add('milestone-text');
+  label.textContent = adaptLanguage(previousItem.label);
+  newLI.appendChild(label);
+
+  const image = document.createElement('img');
+  image.src = `./images/item_images/${previousItem.item_id}.png`;
+  image.onerror = () => {
+    image.style.display = 'none';
+  };
+  image.alt = '';
+  newLI.appendChild(image);
+
+  cards.appendChild(newLI);
+
+  stack.createCard(newLI);
+  newLI.classList.add('in-deck');
+
+  responseLog.data.pop();
+
+  counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
+
+  if (item === 0) {
+    buttonBack.disabled = true;
+  }
 }
 
 // Add event listener for when a card is thrown out of the stack.
@@ -150,3 +246,4 @@ document.addEventListener('keydown', (e) => {
 
 buttonNo.addEventListener('click', handleNoClick, { capture: true });
 buttonYes.addEventListener('click', handleYesClick, { capture: true });
+buttonBack.addEventListener('click', goBackOneItem);

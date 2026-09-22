@@ -96,6 +96,7 @@ module.exports = {
     static: {
       directory: path.join(__dirname, 'dist'),
     },
+    host: '0.0.0.0',
     port: 3000,
     open: false, // open browser window automatically
     hot: true, // enable hot reload

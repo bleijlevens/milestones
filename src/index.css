@@ -110,3 +110,10 @@ input[type=number]::-webkit-outer-spin-button {
   height: auto;
   padding: 0%;
 }
+
+#img-card {
+  width: 25%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
