@@ -1281,7 +1281,7 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1790085381752
+      // 1790166502734
       var cssReload = __webpack_require__(/*! ../node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js */ "./node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js")(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -3559,21 +3559,17 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ "./src/index.css");
 
 
+const participantID =
+  new URL(document.location.href).searchParams.get('ID');
 const button = document.getElementById('button-center-item');
-const textField = document.querySelector('.mdc-text-field__input');
 const childNameInput = document.getElementById('child-name-input');
 const childNameNA = document.getElementById('child-name-na');
 
-// Check the participant ID, name, and gender whenever something is entered
+// Check child name and gender whenever something is entered
 const handleInput = () => {
-  const participantID = textField.value;
 
-  document.querySelector(
-    '.mdc-text-field-character-counter',
-  ).textContent = `${participantID.length} / 10`;
-
-  const gender =
-    document.querySelector('input[name="gender"]:checked');
+  const childGender =
+    document.querySelector('input[name="childGender"]:checked');
 
   const childNameProvided = childNameInput.value.trim().length > 0;
   const childNameNotProvided = childNameNA.checked;
@@ -3582,18 +3578,17 @@ const handleInput = () => {
     childNameProvided || childNameNotProvided;
 
   button.disabled =
-    participantID.length === 0 ||
-    !gender ||
+    !participantID ||
+    !childGender ||
     !childNameValid;
 };
 
 document
-  .querySelectorAll('input[name="gender"]')
+  .querySelectorAll('input[name="childGender"]')
   .forEach((radio) => {
     radio.addEventListener('change', handleInput);
   });
 
-textField.addEventListener('keyup', handleInput);
 
 childNameInput.addEventListener('input', () => {
   if (childNameInput.value.trim().length > 0) {
@@ -3615,10 +3610,8 @@ childNameNA.addEventListener('change', () => {
 const handleContinueClick = (event) => {
   event.preventDefault();
 
-  const participantID = textField.value;
-
-  const gender =
-    document.querySelector('input[name="gender"]:checked')?.value;
+  const childGender =
+    document.querySelector('input[name="childGender"]:checked')?.value;
   
   const childName = childNameNA.checked
     ? ''
@@ -3627,10 +3620,12 @@ const handleContinueClick = (event) => {
   sessionStorage.setItem('childName', childName);
 
   window.location.href =
-    `./instructionsA.html?ID=${encodeURIComponent(participantID)}&g=${encodeURIComponent(gender)}`;
+    `./instructionsA.html?ID=${encodeURIComponent(participantID)}&g=${encodeURIComponent(childGender)}`;
 };
 
 button.addEventListener('click', handleContinueClick);
+handleInput();
+
 
 
 /***/ })
@@ -3723,7 +3718,7 @@ button.addEventListener('click', handleContinueClick);
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("65d234e1ef98bdee83d9")
+/******/ 		__webpack_require__.h = () => ("662f2a9f9e33451c88c6")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

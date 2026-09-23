@@ -21143,7 +21143,7 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1790085381751
+      // 1790176290754
       var cssReload = __webpack_require__(/*! ../node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js */ "./node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js")(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -25672,17 +25672,59 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
 // ---------------------------------------------------------------------------------------------------------------------
-// FUNCTION FOR DOWNLOADING DATA LOCALLY; WITH BLOB
+// FUNCTION FOR DOWNLOADING DATA LOCALLY
 // ---------------------------------------------------------------------------------------------------------------------
-/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((safe, ID) => {
-  const toSave = new Blob([JSON.stringify(safe, null, 1)]);
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((responseLog, ID) => {
+  const headers = [
+    'subj_id',
+    'child_gender',
+    'child_name',
+    'item_id',
+    'label',
+    'score',
+    'domain',
+    'timestamp',
+    'trial',
+  ];
+
+  const escapeCSV = (value) => {
+    if (value === null || value === undefined) {
+      return '';
+    }
+
+    const stringValue = String(value).replaceAll('"', '""');
+
+    return `"${stringValue}"`;
+  };
+
+  const rows = responseLog.data.map((trial) => [
+    responseLog.meta.subjID,
+    responseLog.meta.childGender,
+    responseLog.meta.childName,
+    trial.item_id,
+    trial.label,
+    trial.score,
+    trial.domain,
+    trial.timestamp,
+    trial.trial,
+  ]);
+
+  const csv = [
+    headers.join(','),
+    ...rows.map((row) => row.map(escapeCSV).join(',')),
+  ].join('\n');
+
+  const toSave = new Blob(
+    ['\uFEFF' + csv],
+    { type: 'text/csv;charset=utf-8;' },
+  );
+
   const day = new Date().toISOString().substr(0, 10);
-  // note: it's UTC time (so for germany add +1)
   const time = new Date().toISOString().substr(11, 8);
 
   const hiddenElement = document.createElement('a');
   hiddenElement.href = window.URL.createObjectURL(toSave);
-  hiddenElement.download = `milestones-${ID}-${day}-${time}.json`;
+  hiddenElement.download = `milestones-${ID}-${day}-${time}.csv`;
   hiddenElement.click();
 });
 
@@ -25705,27 +25747,32 @@ __webpack_require__.r(__webpack_exports__);
     {
         "item_id": "group_003",
         "label": "Does your child try to move {his/her} head (or eyes) to follow an object or person?",
-        "pos": "motor"
+        "domain": "motor"
     },
     {
         "item_id": "group_021",
         "label": "Does your child show interest in new objects that are put in front of {him/her} by reaching out for them?",
-        "pos": "cognitive"
+        "domain": "cognitive"
+    },
+    {
+        "item_id": "group_168",
+        "label": "Does your child look at and focus on objects in front of {him/her}?",
+        "domain": "cognitive"
     },
     {
         "item_id": "group_016",
         "label": "If you play a game with your child, does {he/she} respond with interest (e.g., if you play peek-a-boo, pat-a-cake, wave bye-bye etc., does your child smile, widen the eyes, kick or move arms or vocalize)?",
-        "pos": "social"
+        "domain": "social"
     },
     {
         "item_id": "group_015",
         "label": "Does your child laugh?",
-        "pos": "linguistic"
+        "domain": "linguistic"
     },
     {
         "item_id": "group_012",
         "label": "While lying on {his/her} back, can your child bring the hands together such that they touch each other?",
-        "pos": "motor"
+        "domain": "motor"
     }
 
 ]`;
@@ -25769,7 +25816,7 @@ const buttonBack = document.getElementById('button-back');
 // An instance of the Stack is used to attach event listeners.
 const stack = swing__WEBPACK_IMPORTED_MODULE_3__.Stack({
   throwOutConfidence: (xOffset, yOffset, element) => {
-    const xConfidence = Math.min(Math.abs(xOffset) / 250, 1);
+    const xConfidence = Math.min(Math.abs(xOffset) / 150, 1);
     return xConfidence;
   },
 });
@@ -25830,7 +25877,7 @@ data.splice(data.length - item, item);
 
 for (let i = 0; i < data.length; i++) {
   const newLI = document.createElement('li');
-  newLI.classList.add(`${data[i].pos}`);
+  newLI.classList.add(`${data[i].domain}`);
   newLI.dataset.itemId = data[i].item_id;
 
   // milestone text
@@ -25843,7 +25890,7 @@ for (let i = 0; i < data.length; i++) {
   const image = document.createElement('img');
   image.src = `./images/item_images/${data[i].item_id}.png`;
   image.onerror = () => {
-    image.style.display = 'none';
+    image.src = './images/item_images/placeholder.png';
   };
   image.alt = '';
   newLI.appendChild(image);
@@ -25886,7 +25933,7 @@ function logResponse() {
     // score 0 if child doesn't pass milestone; score 1 if child passes milestone
     // score: e.throwDirection.description === 'LEFT' ? 0 : 1,
     score: '',
-    pos: cards.lastElementChild.classList[0],
+    domain: cards.lastElementChild.classList[0],
     timestamp: new Date().toISOString(),
     trial: item + 1,
   };
@@ -25894,6 +25941,7 @@ function logResponse() {
   // increase counter
   item++;
   buttonBack.disabled = false;
+
 
   if (item < trials) {
     counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
@@ -25913,10 +25961,12 @@ function goBackOneItem() {
 
   item--;
 
+  buttonBack.disabled = true;
+
   const previousItem = data[data.length - 1 - item];
 
   const newLI = document.createElement('li');
-  newLI.classList.add(`${previousItem.pos}`);
+  newLI.classList.add(`${previousItem.domain}`);
   newLI.dataset.itemId = previousItem.item_id;
 
   const label = document.createElement('div');
@@ -25927,7 +25977,7 @@ function goBackOneItem() {
   const image = document.createElement('img');
   image.src = `./images/item_images/${previousItem.item_id}.png`;
   image.onerror = () => {
-    image.style.display = 'none';
+    image.src = './images/item_images/placeholder.png';
   };
   image.alt = '';
   newLI.appendChild(image);
@@ -26090,7 +26140,7 @@ buttonBack.addEventListener('click', goBackOneItem);
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("65d234e1ef98bdee83d9")
+/******/ 		__webpack_require__.h = () => ("662f2a9f9e33451c88c6")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

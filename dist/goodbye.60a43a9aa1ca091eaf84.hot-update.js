@@ -1,0 +1,11 @@
+"use strict";
+self["webpackHotUpdateminimal_webpack_dev_server_babel_setup"]("goodbye",{},
+/******/ function(__webpack_require__) { // webpackRuntimeModules
+/******/ /* webpack/runtime/getFullHash */
+/******/ (() => {
+/******/ 	__webpack_require__.h = () => ("2e3d1c855cff0aa39369")
+/******/ })();
+/******/ 
+/******/ }
+);
+//# sourceMappingURL=goodbye.60a43a9aa1ca091eaf84.hot-update.js.map

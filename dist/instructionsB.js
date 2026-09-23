@@ -1281,7 +1281,7 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1790085381752
+      // 1790166502734
       var cssReload = __webpack_require__(/*! ../node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js */ "./node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js")(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -3563,14 +3563,14 @@ const button = document.getElementById('button-center-item');
 
 const subjID =
   new URL(document.location.href).searchParams.get('ID') || 'testID';
-const gender =
+const childGender =
   new URL(document.location.href).searchParams.get('g') || 'na';
 
 // define what happens on button click
 const handleContinueClick = (event) => {
   event.preventDefault();
 
-  window.location.href = `./task.html?ID=${subjID}&g=${gender}`;
+  window.location.href = `./task.html?ID=${subjID}&g=${childGender}`;
 };
 
 button.addEventListener('click', handleContinueClick, { capture: false });
@@ -3666,7 +3666,7 @@ button.addEventListener('click', handleContinueClick, { capture: false });
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("65d234e1ef98bdee83d9")
+/******/ 		__webpack_require__.h = () => ("662f2a9f9e33451c88c6")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

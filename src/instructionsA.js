@@ -5,7 +5,7 @@ const button = document.getElementById('button-center-item');
 const subjID =
   new URL(document.location.href).searchParams.get('ID') || 'testID';
 
-const gender =
+const childGender =
   new URL(document.location.href).searchParams.get('g') || 'na';
 
 
@@ -13,7 +13,7 @@ const gender =
 const handleContinueClick = (event) => {
   event.preventDefault();
 
-  window.location.href = `./instructionsB.html?ID=${subjID}&g=${gender}`;
+  window.location.href = `./instructionsB.html?ID=${subjID}&g=${childGender}`;
 };
 
 button.addEventListener('click', handleContinueClick, { capture: false });

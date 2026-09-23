@@ -1,20 +1,16 @@
 import './index.css';
 
+const participantID =
+  new URL(document.location.href).searchParams.get('ID');
 const button = document.getElementById('button-center-item');
-const textField = document.querySelector('.mdc-text-field__input');
 const childNameInput = document.getElementById('child-name-input');
 const childNameNA = document.getElementById('child-name-na');
 
-// Check the participant ID, name, and gender whenever something is entered
+// Check child name and gender whenever something is entered
 const handleInput = () => {
-  const participantID = textField.value;
 
-  document.querySelector(
-    '.mdc-text-field-character-counter',
-  ).textContent = `${participantID.length} / 10`;
-
-  const gender =
-    document.querySelector('input[name="gender"]:checked');
+  const childGender =
+    document.querySelector('input[name="childGender"]:checked');
 
   const childNameProvided = childNameInput.value.trim().length > 0;
   const childNameNotProvided = childNameNA.checked;
@@ -23,18 +19,17 @@ const handleInput = () => {
     childNameProvided || childNameNotProvided;
 
   button.disabled =
-    participantID.length === 0 ||
-    !gender ||
+    !participantID ||
+    !childGender ||
     !childNameValid;
 };
 
 document
-  .querySelectorAll('input[name="gender"]')
+  .querySelectorAll('input[name="childGender"]')
   .forEach((radio) => {
     radio.addEventListener('change', handleInput);
   });
 
-textField.addEventListener('keyup', handleInput);
 
 childNameInput.addEventListener('input', () => {
   if (childNameInput.value.trim().length > 0) {
@@ -56,10 +51,8 @@ childNameNA.addEventListener('change', () => {
 const handleContinueClick = (event) => {
   event.preventDefault();
 
-  const participantID = textField.value;
-
-  const gender =
-    document.querySelector('input[name="gender"]:checked')?.value;
+  const childGender =
+    document.querySelector('input[name="childGender"]:checked')?.value;
   
   const childName = childNameNA.checked
     ? ''
@@ -68,7 +61,9 @@ const handleContinueClick = (event) => {
   sessionStorage.setItem('childName', childName);
 
   window.location.href =
-    `./instructionsA.html?ID=${encodeURIComponent(participantID)}&g=${encodeURIComponent(gender)}`;
+    `./instructionsA.html?ID=${encodeURIComponent(participantID)}&g=${encodeURIComponent(childGender)}`;
 };
 
 button.addEventListener('click', handleContinueClick);
+handleInput();
+

@@ -71,7 +71,7 @@ body {
 }
 
 #viewport {
-  height: 90vh;
+  height: auto;
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -86,8 +86,8 @@ body {
 
 #viewport #stack {
   position: relative;
-  width: min(80vw, 900px);
-  height: min(70vh, 700px);
+  width: min(76vw, 850px);
+  height: min(66vh, 650px);
   margin: 0;
   padding: 0;
 }
@@ -273,8 +273,8 @@ img {
     height: auto;
   }
   #viewport #stack {
-    width: 88vw;
-    height: calc(100dvh - 190px);
+    width: 84vw;
+    height: calc(100dvh - 255px);
   }
   #viewport li {
     font-size: max(20px, min(6vw, 32px));
@@ -282,10 +282,9 @@ img {
   }
   .response-buttons {
     gap: 25vw;
-    margin-top: 1vh;
   }
   .response-button img {
-    width: 5rem;
+    width: 3.8rem;
   }
   .response-button h3 {
     font-size: 1.3rem;
@@ -293,7 +292,35 @@ img {
   }
   #counter {
     margin-top: 0.5rem;
+    margin-bottom: 0.8rem;
   }
+}
+.stack-wrapper {
+  position: relative;
+}
+
+#stack {
+  position: relative;
+  z-index: 2;
+}
+
+.swipe-side {
+  position: absolute;
+  top: 0;
+  height: 100%;
+  width: 5px;
+  border-radius: 6px;
+  z-index: 1;
+}
+
+.swipe-side-left {
+  left: -20px;
+  background-color: #CC433C;
+}
+
+.swipe-side-right {
+  right: -20px;
+  background-color: #5D9E52;
 }
 
 /*# sourceMappingURL=task.css.map*/

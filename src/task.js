@@ -20,7 +20,7 @@ const buttonBack = document.getElementById('button-back');
 // An instance of the Stack is used to attach event listeners.
 const stack = Swing.Stack({
   throwOutConfidence: (xOffset, yOffset, element) => {
-    const xConfidence = Math.min(Math.abs(xOffset) / 250, 1);
+    const xConfidence = Math.min(Math.abs(xOffset) / 150, 1);
     return xConfidence;
   },
 });
@@ -81,7 +81,7 @@ data.splice(data.length - item, item);
 
 for (let i = 0; i < data.length; i++) {
   const newLI = document.createElement('li');
-  newLI.classList.add(`${data[i].pos}`);
+  newLI.classList.add(`${data[i].domain}`);
   newLI.dataset.itemId = data[i].item_id;
 
   // milestone text
@@ -94,7 +94,7 @@ for (let i = 0; i < data.length; i++) {
   const image = document.createElement('img');
   image.src = `./images/item_images/${data[i].item_id}.png`;
   image.onerror = () => {
-    image.style.display = 'none';
+    image.src = './images/item_images/placeholder.png';
   };
   image.alt = '';
   newLI.appendChild(image);
@@ -137,7 +137,7 @@ function logResponse() {
     // score 0 if child doesn't pass milestone; score 1 if child passes milestone
     // score: e.throwDirection.description === 'LEFT' ? 0 : 1,
     score: '',
-    pos: cards.lastElementChild.classList[0],
+    domain: cards.lastElementChild.classList[0],
     timestamp: new Date().toISOString(),
     trial: item + 1,
   };
@@ -145,6 +145,7 @@ function logResponse() {
   // increase counter
   item++;
   buttonBack.disabled = false;
+
 
   if (item < trials) {
     counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
@@ -164,10 +165,12 @@ function goBackOneItem() {
 
   item--;
 
+  buttonBack.disabled = true;
+
   const previousItem = data[data.length - 1 - item];
 
   const newLI = document.createElement('li');
-  newLI.classList.add(`${previousItem.pos}`);
+  newLI.classList.add(`${previousItem.domain}`);
   newLI.dataset.itemId = previousItem.item_id;
 
   const label = document.createElement('div');
@@ -178,7 +181,7 @@ function goBackOneItem() {
   const image = document.createElement('img');
   image.src = `./images/item_images/${previousItem.item_id}.png`;
   image.onerror = () => {
-    image.style.display = 'none';
+    image.src = './images/item_images/placeholder.png';
   };
   image.alt = '';
   newLI.appendChild(image);

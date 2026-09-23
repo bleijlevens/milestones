@@ -1281,7 +1281,7 @@ __webpack_require__.r(__webpack_exports__);
 // extracted by mini-css-extract-plugin
 
     if(true) {
-      // 1790085381752
+      // 1790166502734
       var cssReload = __webpack_require__(/*! ../node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js */ "./node_modules/mini-css-extract-plugin/dist/hmr/hotModuleReplacement.js")(module.id, {"locals":false});
       module.hot.dispose(cssReload);
       module.hot.accept(undefined, cssReload);
@@ -3559,6 +3559,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _index_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./index.css */ "./src/index.css");
 
 
+const deleteCheckbox = document.getElementById('delete-checkbox');
+const deleteButton = document.getElementById('delete-button');
+
+deleteCheckbox.addEventListener('change', () => {
+  deleteButton.disabled = !deleteCheckbox.checked;
+});
 
 /***/ })
 
@@ -3650,7 +3656,7 @@ __webpack_require__.r(__webpack_exports__);
 /******/ 	
 /******/ 	/* webpack/runtime/getFullHash */
 /******/ 	(() => {
-/******/ 		__webpack_require__.h = () => ("65d234e1ef98bdee83d9")
+/******/ 		__webpack_require__.h = () => ("662f2a9f9e33451c88c6")
 /******/ 	})();
 /******/ 	
 /******/ 	/* webpack/runtime/global */

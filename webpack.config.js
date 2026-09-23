@@ -21,6 +21,7 @@ module.exports = {
   // entry: "./src/app.js", // default: ./src/index.js
   // Multiple entry points:
   entry: {
+    consent: './src/consent.js',
     index: './src/index.js', // main.js will be the name in the dist folder
     instructionsA: './src/instructionsA.js',
     instructionsB: './src/instructionsB.js',
