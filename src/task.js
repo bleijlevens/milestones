@@ -1,5 +1,5 @@
 import './task.css';
-import downloadData from './backend/downloadData.js';
+// import downloadData from './backend/downloadData.js';
 import milestonesData from './backend/milestonesDataSelected.js';
 // https://github.com/gajus/swing
 import * as Swing from 'swing';
@@ -17,6 +17,10 @@ const buttonNo = document.getElementById('button-no');
 const buttonYes = document.getElementById('button-yes');
 const buttonBack = document.getElementById('button-back');
 
+buttonNo.style.pointerEvents = 'none';
+buttonYes.style.pointerEvents = 'none';
+buttonBack.disabled = true;
+
 // An instance of the Stack is used to attach event listeners.
 const stack = Swing.Stack({
   throwOutConfidence: (xOffset, yOffset, element) => {
@@ -32,6 +36,7 @@ const cards = document.getElementById('stack');
 //  FIND OUT AT WHICH TRIAL TO START
 // ---------------------------------------------------------------------------------------------------------------------
 let item = 0;
+let taskReady = false;
 
 // function for adapted and gendered language
 const adaptLanguage = (text) => {
@@ -123,6 +128,88 @@ let responseLog = {
   data: [],
 };
 
+let saveQueue = Promise.resolve();
+
+const saveDataToServer = () => {
+  const dataToSave = JSON.stringify(responseLog);
+
+  saveQueue = saveQueue.then(async () => {
+    try {
+      const response = await fetch('./data/save.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: dataToSave,
+      });
+
+      const result = await response.json();
+
+      if (!result.success) {
+        console.error('Saving failed:', result.error);
+      }
+    } catch (error) {
+      console.error('Could not save data:', error);
+    }
+  });
+
+  return saveQueue;
+};
+
+const loadDataFromServer = async () => {
+  try {
+    const response = await fetch(
+      `./data/load.php?ID=${encodeURIComponent(subjID)}`,
+      {
+        cache: 'no-store',
+      },
+    );
+
+    const result = await response.json();
+
+    return result;
+  } catch (error) {
+    console.error('Could not load data:', error);
+    return null;
+  }
+};
+
+const resumeFromSavedData = async () => {
+  const result = await loadDataFromServer();
+
+  if (!result || !result.success || !result.exists) {
+    buttonNo.style.pointerEvents = 'auto';
+    buttonYes.style.pointerEvents = 'auto';
+    buttonBack.disabled = true;
+    taskReady = true;
+    return;
+  }
+
+  responseLog.data = result.data.map((trial) => ({
+    item_id: trial.item_id,
+    label: trial.label,
+    score: Number(trial.score),
+    domain: trial.domain,
+    timestamp: trial.timestamp,
+    trial: Number(trial.trial),
+  }));
+
+  item = responseLog.data.length;
+
+  for (let i = 0; i < item; i++) {
+    cards.lastElementChild.remove();
+  }
+
+  if (item < trials) {
+    counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
+  }
+
+  buttonNo.style.pointerEvents = 'auto';
+  buttonYes.style.pointerEvents = 'auto';
+  buttonBack.disabled = item === 0;
+  taskReady = true;
+};
+
 // ---------------------------------------------------------------------------------------------------------------------
 // FUNCTION FOR LOGGING RESPONSES
 // ---------------------------------------------------------------------------------------------------------------------
@@ -130,8 +217,7 @@ function logResponse() {
   responseLog.data[item] = {
     // get item id and milestone
     item_id: cards.lastElementChild.dataset.itemId,
-    label: cards.lastElementChild.innerText,
-
+    label: cards.lastElementChild.querySelector('.milestone-text').innerText.trim(),
     // throwDirection returns e.g. Symbol(RIGHT)
     // to get direction as string, get the description of the symbol
     // score 0 if child doesn't pass milestone; score 1 if child passes milestone
@@ -161,6 +247,8 @@ function logResponse() {
 // ---------------------------------------------------------------------------------------------------------------------
 
 function goBackOneItem() {
+  if (!taskReady) return;
+
   if (item === 0) return;
 
   item--;
@@ -193,6 +281,8 @@ function goBackOneItem() {
 
   responseLog.data.pop();
 
+  saveDataToServer();
+
   counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
 
   if (item === 0) {
@@ -201,37 +291,51 @@ function goBackOneItem() {
 }
 
 // Add event listener for when a card is thrown out of the stack.
-stack.on('throwout', (e) => {
+stack.on('throwout', async (e) => {
+  if (!taskReady) return;
   logResponse();
   responseLog.data[item - 1].score =
     e.throwDirection.description === 'LEFT' ? 0 : 1;
 
-  // if all milestones were shown, save responses
+  const savePromise = saveDataToServer();
+
+  // if all milestones were shown, wait until saving is finished
   if (document.querySelectorAll('#stack li').length === 0) {
-    downloadData(responseLog, responseLog.meta.subjID);
-    setTimeout(() => (window.location.href = `./goodbye.html`), 1000);
+    await savePromise;
+    window.location.href =
+      `./goodbye.html?ID=${encodeURIComponent(subjID)}`;
   }
 });
 
-const handleNoClick = (e) => {
+const handleNoClick = async (e) => {
+  if (!taskReady) return;
+
   logResponse();
   responseLog.data[item - 1].score = 0;
 
-  // if all milestones were shown, save responses
+  const savePromise = saveDataToServer();
+
+  // if all milestones were shown, wait until saving is finished
   if (document.querySelectorAll('#stack li').length === 0) {
-    downloadData(responseLog, responseLog.meta.subjID);
-    setTimeout(() => (window.location.href = `./goodbye.html`), 1000);
+    await savePromise;
+    window.location.href =
+      `./goodbye.html?ID=${encodeURIComponent(subjID)}`;
   }
 };
 
-const handleYesClick = (e) => {
+const handleYesClick = async (e) => {
+  if (!taskReady) return;
+
   logResponse();
   responseLog.data[item - 1].score = 1;
 
-  // if all milestones were shown, save responses
+  const savePromise = saveDataToServer();
+
+  // if all milestones were shown, wait until saving is finished
   if (document.querySelectorAll('#stack li').length === 0) {
-    downloadData(responseLog, responseLog.meta.subjID);
-    setTimeout(() => (window.location.href = `./goodbye.html`), 1000);
+    await savePromise;
+    window.location.href =
+      `./goodbye.html?ID=${encodeURIComponent(subjID)}`;
   }
 };
 
@@ -250,3 +354,5 @@ document.addEventListener('keydown', (e) => {
 buttonNo.addEventListener('click', handleNoClick, { capture: true });
 buttonYes.addEventListener('click', handleYesClick, { capture: true });
 buttonBack.addEventListener('click', goBackOneItem);
+
+resumeFromSavedData();
