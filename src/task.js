@@ -9,7 +9,7 @@ import * as Swing from 'swing';
 // ---------------------------------------------------------------------------------------------------------------------
 const subjID =
   new URL(document.location.href).searchParams.get('ID') || 'testID';
-const childName = sessionStorage.getItem('childName') || '';
+let childName = sessionStorage.getItem('childName') || '';
 const childGender =
   new URL(document.location.href).searchParams.get('g') || 'na';
 const counter = document.getElementById('counter');
@@ -184,6 +184,21 @@ const resumeFromSavedData = async () => {
     taskReady = true;
     return;
   }
+
+  childName = result.data[0].child_name || '';
+  sessionStorage.setItem('childName', childName);
+  responseLog.meta.childName = childName;
+
+  document.querySelectorAll('#stack li').forEach((card) => {
+    const milestone = data.find(
+      (entry) => entry.item_id === card.dataset.itemId,
+    );
+
+    if (milestone) {
+      card.querySelector('.milestone-text').textContent =
+        adaptLanguage(milestone.label);
+    }
+  });
 
   responseLog.data = result.data.map((trial) => ({
     item_id: trial.item_id,
