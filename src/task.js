@@ -175,6 +175,20 @@ const loadDataFromServer = async () => {
 };
 
 const resumeFromSavedData = async () => {
+  const freshTestRun =
+    sessionStorage.getItem('freshTestRun') === 'true';
+
+  if (freshTestRun) {
+    sessionStorage.removeItem('freshTestRun');
+
+    buttonNo.style.pointerEvents = 'auto';
+    buttonYes.style.pointerEvents = 'auto';
+    buttonBack.disabled = true;
+    taskReady = true;
+
+    return;
+  }
+  
   const result = await loadDataFromServer();
 
   if (!result || !result.success || !result.exists) {

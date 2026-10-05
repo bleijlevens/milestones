@@ -6,6 +6,9 @@ const button = document.getElementById('button-center-item');
 
 const participantID =
   new URL(document.location.href).searchParams.get('ID');
+const isReusableTestID =
+  participantID === 'testID' ||
+  participantID === 'test';
 const trials = JSON.parse(milestonesData()).length;
 
 const handleConsent = () => {
@@ -41,6 +44,18 @@ const handleContinueClick = async (event) => {
       sessionStorage.setItem('childName', childName);
 
       if (result.data.length >= trials) {
+
+        // Test IDs may start a completely new run after finishing
+        if (isReusableTestID) {
+          sessionStorage.removeItem('childName');
+          sessionStorage.setItem('freshTestRun', 'true');
+
+          window.location.href =
+            `./index.html?ID=${encodeURIComponent(participantID)}`;
+          return;
+        }
+
+        // Real participants cannot participate twice
         window.location.href =
           `./goodbye.html?ID=${encodeURIComponent(participantID)}`;
         return;
