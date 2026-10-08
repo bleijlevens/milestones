@@ -1122,7 +1122,7 @@ export default () => {
     },
     {
         "item_id": "group_312",
-        "label": "Verbindet Ihr Kind Gegenstände mit den dazugehörigen Geräuschen (z.B. sucht er/sie nach dem Telefon, wenn es zu klingeln beginnt, oder nach einem vertrauten Gegenstand, wenn es dessen typisches Geräusch hört)?",
+        "label": "Verbindet Ihr Kind Gegenstände mit den dazugehörigen Geräuschen (z.B. sucht er/sie nach dem Telefon, wenn es zu klingeln beginnt, oder nach einem vertrauten Gegenstand, wenn er/sie dessen typisches Geräusch hört)?",
         "domain": "cognitive"
     },
     {
