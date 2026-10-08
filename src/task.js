@@ -1,6 +1,7 @@
 import './task.css';
 // import downloadData from './backend/downloadData.js';
-import milestonesData from './backend/milestonesDataSelected.js';
+import milestonesDataOrder1 from './backend/milestonesDataOrder1.js';
+import milestonesDataOrder2 from './backend/milestonesDataOrder2.js';
 // https://github.com/gajus/swing
 import * as Swing from 'swing';
 
@@ -45,39 +46,63 @@ const adaptLanguage = (text) => {
 
   if (childGender === 'f') {
     adaptedText = adaptedText
-      .replaceAll('{he/she}', 'she')
-      .replaceAll('{him/her}', 'her')
-      .replaceAll('{his/her}', 'her')
-      .replaceAll('{himself/herself}', 'herself');
+      .replaceAll('er/sie', 'sie')
+      .replaceAll('ihm/ihr', 'ihr')
+      .replaceAll('ihn/sie', 'sie')
+      .replaceAll('sein/ihr', 'ihr')
+      .replaceAll('seine/ihre', 'ihre')
+      .replaceAll('seinem/ihrem', 'ihrem')
+      .replaceAll('seinen/ihren', 'ihren')
+      .replaceAll('seiner/ihrer', 'ihrer')
+      .replaceAll('seines/ihres', 'ihres');
   }
 
   if (childGender === 'm') {
     adaptedText = adaptedText
-      .replaceAll('{he/she}', 'he')
-      .replaceAll('{him/her}', 'him')
-      .replaceAll('{his/her}', 'his')
-      .replaceAll('{himself/herself}', 'himself');
+      .replaceAll('er/sie', 'er')
+      .replaceAll('ihm/ihr', 'ihm')
+      .replaceAll('ihn/sie', 'ihn')
+      .replaceAll('sein/ihr', 'sein')
+      .replaceAll('seine/ihre', 'seine')
+      .replaceAll('seinem/ihrem', 'seinem')
+      .replaceAll('seinen/ihren', 'seinen')
+      .replaceAll('seiner/ihrer', 'seiner')
+      .replaceAll('seines/ihres', 'seines');
   }
 
   if (childGender === 'na') {
     adaptedText = adaptedText
-      .replaceAll('{he/she}', 'he/she')
-      .replaceAll('{him/her}', 'him/her')
-      .replaceAll('{his/her}', 'his/her')
-      .replaceAll('{himself/herself}', 'himself/herself');
+      .replaceAll('er/sie', 'sie/er')
+      .replaceAll('ihm/ihr', 'ihr/ihm')
+      .replaceAll('ihn/sie', 'sie/ihn')
+      .replaceAll('sein/ihr', 'ihr/sein')
+      .replaceAll('seine/ihre', 'ihre/seine')
+      .replaceAll('seinem/ihrem', 'ihrem/seinem')
+      .replaceAll('seinen/ihren', 'ihren/seinen')
+      .replaceAll('seiner/ihrer', 'ihrer/seiner')
+      .replaceAll('seines/ihres', 'ihres/seines');
   }
 
   if (childName.trim().length > 0) {
     adaptedText = adaptedText
-      .replaceAll('your child', childName)
-      .replaceAll('Your child', childName);
+      .replaceAll('Ihr Kind', childName)
+      .replaceAll('Ihrem Kind', childName)
+      .replaceAll('Ihres Kindes', `von ${childName}`);
   }
 
   return adaptedText;
 };
 
 // read in milestone data
+const itemOrder = sessionStorage.getItem('itemOrder');
+
+const milestonesData =
+  itemOrder === '2'
+    ? milestonesDataOrder2
+    : milestonesDataOrder1;
+
 const data = JSON.parse(milestonesData());
+
 const trials = data.length;
 
 counter.textContent = `${item + 1} von ${trials} Meilensteinen`;
@@ -124,6 +149,7 @@ let responseLog = {
     subjID: subjID,
     childGender: childGender,
     childName: childName,
+    itemOrder: itemOrder,
   },
   data: [],
 };

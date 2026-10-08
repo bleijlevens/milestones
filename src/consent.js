@@ -1,5 +1,6 @@
 import './index.css';
-import milestonesData from './backend/milestonesDataSelected.js';
+import milestonesDataOrder1 from './backend/milestonesDataOrder1.js';
+import milestonesDataOrder2 from './backend/milestonesDataOrder2.js';
 
 const checkbox = document.getElementById('confirm-checkbox');
 const button = document.getElementById('button-center-item');
@@ -9,7 +10,11 @@ const participantID =
 const isReusableTestID =
   participantID === 'testID' ||
   participantID === 'test';
-const trials = JSON.parse(milestonesData()).length;
+const trials = JSON.parse(milestonesDataOrder1()).length;
+
+const chooseRandomOrder = () => {
+  return Math.random() < 0.5 ? '1' : '2';
+};
 
 const handleConsent = () => {
   button.disabled =
@@ -43,11 +48,19 @@ const handleContinueClick = async (event) => {
 
       sessionStorage.setItem('childName', childName);
 
+      const itemOrder = result.data[0].item_order;
+      sessionStorage.setItem('itemOrder', itemOrder);
+      
+
       if (result.data.length >= trials) {
 
         // Test IDs may start a completely new run after finishing
         if (isReusableTestID) {
           sessionStorage.removeItem('childName');
+
+          const itemOrder = chooseRandomOrder();
+          sessionStorage.setItem('itemOrder', itemOrder);
+
           sessionStorage.setItem('freshTestRun', 'true');
 
           window.location.href =
@@ -71,6 +84,9 @@ const handleContinueClick = async (event) => {
   }
 
   // New participant: continue with normal setup
+  const itemOrder = chooseRandomOrder();
+  sessionStorage.setItem('itemOrder', itemOrder);
+
   window.location.href =
     `./index.html?ID=${encodeURIComponent(participantID)}`;
 };
