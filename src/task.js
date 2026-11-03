@@ -117,6 +117,9 @@ for (let i = 0; i < data.length; i++) {
   // milestone text
   const label = document.createElement('div');
   label.classList.add('milestone-text');
+  if (data[i].label.length > 200) {
+    label.classList.add('milestone-text-long');
+  }
   label.textContent = adaptLanguage(data[i].label);
   newLI.appendChild(label);
 
@@ -318,6 +321,9 @@ function goBackOneItem() {
 
   const label = document.createElement('div');
   label.classList.add('milestone-text');
+  if (previousItem.label.length > 200) {
+    label.classList.add('milestone-text-long');
+  }
   label.textContent = adaptLanguage(previousItem.label);
   newLI.appendChild(label);
 

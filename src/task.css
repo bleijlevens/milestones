@@ -106,7 +106,7 @@ body {
     font-size: clamp(24px, 4vw, 36px);
     border: 2px solid #ECECEC; 
     display: grid;
-    grid-template-rows: minmax(0, 65%) 55%;
+    grid-template-rows: minmax(0, 60%) 40%;
     align-items: center;
     box-sizing: border-box;
     padding: 2vh 2vw;
@@ -292,4 +292,8 @@ img {
 .swipe-side-right {
   right: -20px;
   background-color: #5D9E52;
+}
+
+.milestone-text-long {
+  font-size: 0.82em;
 }
