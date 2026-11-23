@@ -277,8 +277,8 @@ img {
 
 .swipe-side {
   position: absolute;
-  top: 0;
-  height: 100%;
+  top: -10px;
+  bottom: -10px;
   width: 5px;
   border-radius: 6px;
   z-index: 1;
@@ -296,4 +296,34 @@ img {
 
 .milestone-text-long {
   font-size: 0.82em;
+}
+
+.choice-feedback {
+  position: absolute;
+  top: -10px;
+  bottom: -10px;
+  left: -15px;
+  right: -15px;
+  z-index: 5;
+  pointer-events: none;
+  opacity: 0;
+  border-radius: 5px;
+}
+
+.choice-feedback.yes {
+  background-color: rgba(93, 158, 82, 0.3);
+}
+
+.choice-feedback.no {
+  background-color: rgba(204, 67, 60, 0.3);
+}
+
+#viewport li.covered::after {
+  content: "";
+  position: absolute;
+  inset: 2px;
+  background: white;
+  border-radius: 3px;
+  z-index: 10;
+  pointer-events: none;
 }

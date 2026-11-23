@@ -13,7 +13,8 @@ const childGender =
 const handleContinueClick = (event) => {
   event.preventDefault();
 
-  window.location.href = `./instructionsB.html?ID=${subjID}&g=${childGender}`;
+  window.location.href =
+    `./instructionsB.html?ID=${encodeURIComponent(subjID)}&g=${encodeURIComponent(childGender)}`;
 };
 
 button.addEventListener('click', handleContinueClick, { capture: false });

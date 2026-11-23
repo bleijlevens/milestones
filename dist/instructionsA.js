@@ -1,2 +1,2 @@
-(()=>{"use strict";const e=document.getElementById("button-center-item"),t=new URL(document.location.href).searchParams.get("ID")||"testID",n=new URL(document.location.href).searchParams.get("g")||"na";e.addEventListener("click",(e=>{e.preventDefault(),window.location.href=`./instructionsB.html?ID=${t}&g=${n}`}),{capture:!1})})();
+(()=>{"use strict";const e=document.getElementById("button-center-item"),t=new URL(document.location.href).searchParams.get("ID")||"testID",n=new URL(document.location.href).searchParams.get("g")||"na";e.addEventListener("click",(e=>{e.preventDefault(),window.location.href=`./instructionsB.html?ID=${encodeURIComponent(t)}&g=${encodeURIComponent(n)}`}),{capture:!1})})();
 //# sourceMappingURL=instructionsA.js.map

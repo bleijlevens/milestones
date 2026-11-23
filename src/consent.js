@@ -37,7 +37,7 @@ const handleContinueClick = async (event) => {
 
     const result = await response.json();
 
-    // Returning participant: skip setup and instructions
+    // Returning participant: skip participant and instructions
     if (
       result.success &&
       result.exists &&
@@ -64,7 +64,7 @@ const handleContinueClick = async (event) => {
           sessionStorage.setItem('freshTestRun', 'true');
 
           window.location.href =
-            `./index.html?ID=${encodeURIComponent(participantID)}`;
+            `./participant.html?ID=${encodeURIComponent(participantID)}`;
           return;
         }
 
@@ -88,7 +88,7 @@ const handleContinueClick = async (event) => {
   sessionStorage.setItem('itemOrder', itemOrder);
 
   window.location.href =
-    `./index.html?ID=${encodeURIComponent(participantID)}`;
+    `./participant.html?ID=${encodeURIComponent(participantID)}`;
 };
 
 button.addEventListener('click', handleContinueClick);

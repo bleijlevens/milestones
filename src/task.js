@@ -17,6 +17,7 @@ const counter = document.getElementById('counter');
 const buttonNo = document.getElementById('button-no');
 const buttonYes = document.getElementById('button-yes');
 const buttonBack = document.getElementById('button-back');
+const choiceFeedback = document.getElementById('choice-feedback');
 
 buttonNo.style.pointerEvents = 'none';
 buttonYes.style.pointerEvents = 'none';
@@ -120,7 +121,7 @@ for (let i = 0; i < data.length; i++) {
   if (data[i].label.length > 200) {
     label.classList.add('milestone-text-long');
   }
-  label.textContent = adaptLanguage(data[i].label);
+  label.innerHTML = adaptLanguage(data[i].label);
   newLI.appendChild(label);
 
   // milestone image
@@ -238,7 +239,7 @@ const resumeFromSavedData = async () => {
     );
 
     if (milestone) {
-      card.querySelector('.milestone-text').textContent =
+      card.querySelector('.milestone-text').innerHTML =
         adaptLanguage(milestone.label);
     }
   });
@@ -324,7 +325,7 @@ function goBackOneItem() {
   if (previousItem.label.length > 200) {
     label.classList.add('milestone-text-long');
   }
-  label.textContent = adaptLanguage(previousItem.label);
+  label.innerHTML = adaptLanguage(previousItem.label);
   newLI.appendChild(label);
 
   const image = document.createElement('img');
@@ -355,6 +356,11 @@ function goBackOneItem() {
 stack.on('throwout', async (e) => {
   if (!taskReady) return;
   logResponse();
+
+  showChoiceFeedback(
+    e.throwDirection.description === 'LEFT' ? 'no' : 'yes'
+  );
+
   responseLog.data[item - 1].score =
     e.throwDirection.description === 'LEFT' ? 0 : 1;
 
@@ -368,10 +374,34 @@ stack.on('throwout', async (e) => {
   }
 });
 
+const showChoiceFeedback = (choice) => {
+  choiceFeedback.classList.remove('yes', 'no');
+
+  void choiceFeedback.offsetWidth;
+
+  const nextCard = cards.lastElementChild;
+
+  if (nextCard) {
+    nextCard.classList.add('covered');
+  }
+
+  choiceFeedback.classList.add(choice);
+  choiceFeedback.style.opacity = '1';
+
+  setTimeout(() => {
+    choiceFeedback.style.opacity = '0';
+    if (nextCard) {
+      nextCard.classList.remove('covered');
+    }
+  }, 300);
+};
+
 const handleNoClick = async (e) => {
   if (!taskReady) return;
 
   logResponse();
+  showChoiceFeedback('no');
+
   responseLog.data[item - 1].score = 0;
 
   const savePromise = saveDataToServer();
@@ -388,6 +418,8 @@ const handleYesClick = async (e) => {
   if (!taskReady) return;
 
   logResponse();
+  showChoiceFeedback('yes');
+
   responseLog.data[item - 1].score = 1;
 
   const savePromise = saveDataToServer();

@@ -1,0 +1,2 @@
+(()=>{"use strict";const e=document.getElementById("button-center-item"),t=new URL(document.location.href).searchParams.get("ID")||"testID";e.addEventListener("click",(e=>{e.preventDefault(),window.location.href=`./consent.html?ID=${encodeURIComponent(t)}`}),{capture:!1})})();
+//# sourceMappingURL=welcome.js.map
